@@ -9,7 +9,7 @@
     background: $cor-card;
     border-radius: 12px;
     max-width: 950px;
-    margin: 30px auto;
+    margin: 80px 0 30px 0px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.07);
     border: 1px solid $cor-borda;
 }
@@ -29,7 +29,7 @@
 
     &.active,
     &:hover {
-        background: color.adjust($cor-primaria, $lightness: 10%);
+         background-color: $cor-destaque;
         transform: scale(1.1);
     }
 }

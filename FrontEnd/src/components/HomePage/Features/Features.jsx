@@ -6,7 +6,7 @@ const Features = () => {
     <section id="recursos" className="recursos">
       <div className="container">
         <div className="recursos-titulo" data-anime="top">
-          <h3>Como o Conserva Cidadão funciona</h3>
+          <h3>Como o Fala Cidadão funciona</h3>
           <p>Uma plataforma simples e poderosa para transformação urbana</p>
         </div>
         <div className="recursos-grid">

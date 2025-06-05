@@ -1,98 +1,206 @@
 @use "../../../styles/App.scss" as *;
 
 .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background-color: #0f0f1a80;
-    z-index: 1000;
-    display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(14, 14, 26, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 
-    &.active {
-        display: block;
-    }
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
 }
 
 .new-post-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: $cor-card;
-    border-radius: 16px;
-    padding: 25px;
-    width: 90%;
-    max-width: 70vw;
-    z-index: 1001;
-    display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background-color: $cor-card;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 950px;
+  height: 90vh;
+  max-height: 900px;
+  z-index: 1001;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba($cor-primaria, 0.4);
 
-    &.active {
-        display: block;
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .modal-header {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid $cor-borda;
+    background-color: darken($cor-card, 2%);
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $cor-destaque;
+      margin: 0;
     }
 
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
+    .close-modal {
+      background: none;
+      border: none;
+      color: $cor-texto-claro;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, color 0.2s ease;
+      padding: 0.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-        .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: $cor-destaque;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            color: $cor-texto-claro;
-            font-size: 24px;
-            cursor: pointer;
-        }
+      &:hover {
+        color: $cor-primaria;
+        transform: rotate(90deg);
+        background-color: rgba($cor-primaria, 0.1);
+      }
     }
+  }
+
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 
     .post-form {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
 
-        textarea#newPostContent {
-            width: 100%;
-            background-color: $cor-fundo;
-            border: 1px solid $cor-borda;
-            border-radius: 12px;
-            padding: 15px;
-            color: $cor-texto;
-            min-height: 150px;
-            resize: vertical;
+      fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+
+        label {
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: $cor-texto;
+          display: block;
+          font-size: 0.95rem;
         }
 
-        .post-form-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        input,
+        textarea {
+          width: 100%;
+          background-color: $cor-fundo;
+          border: 1px solid $cor-borda;
+          border-radius: 10px;
+          padding: 0.875rem 1rem;
+          color: $cor-texto;
+          font-size: 1rem;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
-            .upload-options {
-                display: flex;
-                gap: 10px;
+          &:focus {
+            outline: none;
+            border-color: $cor-primaria;
+            box-shadow: 0 0 0 2px rgba($cor-primaria, 0.2);
+          }
 
-                .upload-btn {
-                    background: none;
-                    border: none;
-                    color: $cor-texto-claro;
-                    cursor: pointer;
-                    font-size: 20px;
-                }
-            }
-
-            .post-submit {
-                background-color: $cor-primaria;
-                color: white;
-                border: none;
-                border-radius: 20px;
-                padding: 10px 25px;
-                cursor: pointer;
-                font-weight: 600;
-            }
+          &::placeholder {
+            color: lighten($cor-texto-claro, 20%);
+            opacity: 0.7;
+          }
         }
+
+        textarea {
+          min-height: 120px;
+          resize: vertical;
+        }
+
+        .text-danger {
+          color: #ff4d4f;
+          font-size: 0.85rem;
+          margin-top: 0.5rem;
+          display: block;
+        }
+      }
+
+      .d-flex {
+        &.gap-2 {
+          gap: 0.75rem;
+        }
+
+        .btn {
+          &-primary {
+            white-space: nowrap;
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .post-submit {
+        background-color: $cor-primaria;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 0.875rem 2rem;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        margin: 0.5rem auto 0;
+        transition: all 0.3s ease;
+        width: fit-content;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          background-color: $cor-secundaria;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
     }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .new-post-modal {
+    max-width: 95%;
+    height: 95vh;
+
+    .modal-header {
+      padding: 1rem;
+
+      .modal-title {
+        font-size: 1.25rem;
+      }
+    }
+
+    .modal-body {
+      padding: 1rem;
+      gap: 1rem;
+    }
+  }
 }

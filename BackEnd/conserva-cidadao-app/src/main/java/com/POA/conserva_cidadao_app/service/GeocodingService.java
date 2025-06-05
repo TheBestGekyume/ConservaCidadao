@@ -20,62 +20,66 @@ public class GeocodingService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-public Map<String, Object> getLatLng(String endereco) {
-    String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
-            .queryParam("address", endereco)
-            .queryParam("key", apiKey)
-            .encode()
-            .toUriString();
+    public Map<String, Object> getLatLng(String endereco) {
+        String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("address", endereco)
+                .queryParam("key", apiKey)
+                .encode()
+                .toUriString();
 
-    GoogleResponse response = restTemplate.getForObject(url, GoogleResponse.class);
+        GoogleResponse response = restTemplate.getForObject(url, GoogleResponse.class);
 
-    if (response != null &&
-            response.results != null &&
-            !response.results.isEmpty() &&
-            response.results.get(0) != null &&
-            response.results.get(0).geometry != null &&
-            response.results.get(0).geometry.location != null) {
+        if (response != null &&
+                response.results != null &&
+                !response.results.isEmpty() &&
+                response.results.get(0) != null &&
+                response.results.get(0).geometry != null &&
+                response.results.get(0).geometry.location != null) {
 
-        Location location = response.results.get(0).geometry.location;
-        List<AddressComponent> components = response.results.get(0).address_components;
+            Location location = response.results.get(0).geometry.location;
+            List<AddressComponent> components = response.results.get(0).address_components;
 
-        String rua = null;
-        String cidade = null;
-        String estado = null;
+            String rua = null;
+            String numero = null;
+            String bairro = null;
+            String cidade = null;
+            String estado = null;
 
-        for (AddressComponent comp : components) {
-            if (comp.types.contains("route")) {
-                rua = comp.long_name;
-            } else if (comp.types.contains("administrative_area_level_2")) {
-                cidade = comp.long_name;
-            } else if (comp.types.contains("administrative_area_level_1")) {
-                estado = comp.short_name;
+            for (AddressComponent comp : components) {
+                if (comp.types.contains("route")) {
+                    rua = comp.long_name;
+                } else if (comp.types.contains("street_number")) {
+                    numero = comp.long_name;
+                } else if (comp.types.contains("sublocality_level_1") || comp.types.contains("neighborhood")) {
+                    bairro = comp.long_name;
+                } else if (comp.types.contains("administrative_area_level_2")) {
+                    cidade = comp.long_name;
+                } else if (comp.types.contains("administrative_area_level_1")) {
+                    estado = comp.short_name;
+                }
             }
+
+            // Monta endereço completo (opcional)
+            StringBuilder enderecoCompleto = new StringBuilder();
+            if (rua != null) enderecoCompleto.append(rua);
+            if (numero != null) enderecoCompleto.append(", ").append(numero);
+            if (bairro != null) enderecoCompleto.append(" - ").append(bairro);
+            if (cidade != null) enderecoCompleto.append(" - ").append(cidade);
+            if (estado != null) enderecoCompleto.append("/").append(estado);
+
+            Map<String, Object> resultado = new HashMap<>();
+            resultado.put("latitude", location.lat);
+            resultado.put("longitude", location.lng);
+            resultado.put("rua", rua);
+            resultado.put("numero", numero);
+            resultado.put("bairro", bairro);
+            // resultado.put("enderecoCompleto", enderecoCompleto.toString());
+
+            return resultado;
         }
 
-        // Monta o endereço, evitando campos nulos
-        StringBuilder enderecoCompleto = new StringBuilder();
-        if (rua != null) enderecoCompleto.append(rua);
-        if (cidade != null) {
-            if (enderecoCompleto.length() > 0) enderecoCompleto.append(", ");
-            enderecoCompleto.append(cidade);
-        }
-        if (estado != null) {
-            if (enderecoCompleto.length() > 0) enderecoCompleto.append(" - ");
-            enderecoCompleto.append(estado);
-        }
-
-        return Map.of(
-                "latitude", location.lat,
-                "longitude", location.lng,
-                "enderecoCompleto", enderecoCompleto.toString()
-        );
+        throw new RuntimeException("Endereço não encontrado");
     }
-
-    throw new RuntimeException("Endereço não encontrado");
-}
-
-
 
     private static class GoogleResponse {
         public List<Result> results;
@@ -86,7 +90,6 @@ public Map<String, Object> getLatLng(String endereco) {
         public List<AddressComponent> address_components;
         public String formatted_address;
     }
-
 
     private static class Geometry {
         public Location location;

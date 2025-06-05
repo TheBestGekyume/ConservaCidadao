@@ -83,11 +83,6 @@
         border: 3px solid $cor-card;
         margin-left: -15px;
         transition: transform 0.3s ease;
-
-        &:hover {
-            transform: translateY(-5px);
-            z-index: 1;
-        }
     }
 }
 

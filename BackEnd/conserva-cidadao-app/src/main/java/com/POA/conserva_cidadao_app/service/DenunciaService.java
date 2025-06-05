@@ -25,7 +25,8 @@ public class DenunciaService {
     private DenunciaResponseDTO mapToDTO(Denuncia denuncia) {
         UsuarioResponseDTO usuarioDTO = new UsuarioResponseDTO(
                 denuncia.getUsuario().getId(),
-                denuncia.getUsuario().getNome()
+                denuncia.getUsuario().getNome(),
+                denuncia.getUsuario().getRole()
         );
 
         return new DenunciaResponseDTO(

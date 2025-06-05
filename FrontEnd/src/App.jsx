@@ -13,7 +13,7 @@ import './styles/App.scss';
 function AppContent() {
   const location = useLocation();
 
-  const noLayoutRoutes = ['/auth/login', '/auth/register', '/posts'];
+  const noLayoutRoutes = ['/auth/login', '/auth/register', '/posts', '/admin' ];
   const noLayout = noLayoutRoutes.includes(location.pathname);
 
   return (

@@ -7,15 +7,23 @@
     margin-bottom: 20px;
     
     
+    
 }
 
 .tabs-container {
     display: flex;
     border-bottom: 1px solid $cor-borda;
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+    justify-content: center;
+    margin-top: 30px;
+    background: $cor-card;
+    padding: 10px;
 }
 
 .tab {
-    padding: 15px 25px;
+    padding: 15px 17px;
     font-weight: 600;
     cursor: pointer;
     position: relative;

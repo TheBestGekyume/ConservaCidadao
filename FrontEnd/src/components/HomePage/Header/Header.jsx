@@ -8,7 +8,7 @@ const Header = () => {
         <div className="hero-content">
           <div className="hero-conteudo" data-anime="left">
             <h2>Transforme sua cidade com a comunidade</h2>
-            <p>Conserva Cidadão é a rede social que empodera cidadãos a reportarem problemas urbanos, acompanharem soluções e se conectarem com outros agentes de transformação.</p>
+            <p>O Fala Cidadão é a rede social que empodera cidadãos a reportarem problemas urbanos, acompanharem soluções e se conectarem com outros agentes de transformação.</p>
           </div>
           <div className="hero-ilustracao" data-anime="right">
             <div className="feed-social">

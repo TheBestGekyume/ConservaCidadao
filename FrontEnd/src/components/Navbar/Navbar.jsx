@@ -1,6 +1,6 @@
 import './Navbar.scss';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext'; // ajuste o caminho se necessário
+import { useAuth } from '../../contexts/useAuth'; // ajuste o caminho se necessário
 import { BiSolidUserCircle } from "react-icons/bi";
 const Navbar = () => {
   const { usuarioNome } = useAuth();
